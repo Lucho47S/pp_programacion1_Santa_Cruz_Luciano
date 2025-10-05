@@ -1,9 +1,7 @@
-from pedir_datos_confirmaciones import validacion_usuario, ingreso_de_usuario
+import validaciones as val
 
 
-
-
-def rellenar_matriz_con_datos (nombres:str, alias:str, razas:str, generos:str, poderes:int, inteligencias:int, velocidades:int):
+def rellenar_matriz_con_datos (nombres:list, alias:list, razas:list, generos:list, poderes:list, inteligencias:list, velocidades:list):
 
     matriz = [] #creo una matriz para concatenar los datos de las listas dadas
 
@@ -14,18 +12,53 @@ def rellenar_matriz_con_datos (nombres:str, alias:str, razas:str, generos:str, p
     
     return matriz
 
+def agregar_personaje_input ():
+    """Retorna todos los datos ingresados por el usuario para añadir un personaje
 
-def agregar_personaje_matriz (matriz:list[list], nombres:str, alias:str, razas:str, generos:str, poderes:int, inteligencias:int, velocidades:int):
+    Returns:
+        
+        nombres[str]: nombre del personaje
 
-    confirmacion = False
+        alias[str]: apodo del personaje
 
-    while confirmacion == False:
+        razas[str]: raza del personaje
 
-        nuevo_personaje = [nombres, alias, razas, generos, poderes, inteligencias, velocidades]
+        generos[str]: genero del personaje
+
+        poderes[int]: nivel de poder del personaje
+
+        inteligencias[int]: nivel de inteligencia del personaje
+        
+        velocidades[int]: nivel de velocidad del sujeto
+    """
+    nombres = input("Ingresa el nombre del sujeto: ")
+    alias = input("Ingresa el alias del sujeto: ")
+    razas = input("Ingresa las razas del sujeto: ")
+    generos = input("Ingresa el genero del sujeto: ")
+    poderes = val.validar_modo("Ingresa el nivel de poder del sujeto: ", "digit")
+    inteligencias = val.validar_modo("Ingresa la inteligencia del sujeto: ", "digit")
+    velocidades = val.validar_modo("Ingresa las velocidades del sujeto: ", "digit")
+
+    return [nombres, alias, razas, generos, poderes, inteligencias, velocidades]
+
+def agregar_personaje_matriz (matriz:list[list]):
+    """Appendea un personaje a la matriz
+
+    Args:
+        matriz[list[list]]: matriz a appendear
+
+    Returns:
+        matriz[list[list]]: matriz modificada
+    """
+    confirmacion = True
+
+    while confirmacion == True:
+
+        nuevo_personaje = agregar_personaje_input()
 
         matriz.append(nuevo_personaje)
 
-        confirmacion = validacion_usuario("Quieres agregar un personaje mas?")
+        confirmacion = val.validacion_input_booleano("Quieres agregar un personaje mas?")
     
     return matriz
 
@@ -35,21 +68,16 @@ def mostrar_matriz_personajes (matriz):
         print(f"Nombre: {fila[0]} | Alias: {fila[1]} | Raza: {fila[2]} | Genero: {fila[3]} | Poder: {fila[4]} | inteligencia: {fila[5]} | velocidad: {fila[6]} ")
 
 
-def existencias_de_raza (matriz:list[list], filtro:str):
+def existencias_de_raza (matriz:list[list], filtro:str, excluir:bool):
 
     contador = 0
     for fila in matriz:
-        if filtro in fila[2]:
-            contador += 1
-
-    return contador
-
-def filtrar_raza (matriz:list[list], filtro:str):
-
-    contador = 0
-    for fila in matriz:
-        if filtro != fila[2]:
-            contador += 1
+        if excluir == False:
+            if filtro in fila[2]:
+                contador += 1
+        else:
+            if filtro not in fila[2]:
+                contador += 1
 
     return contador
 

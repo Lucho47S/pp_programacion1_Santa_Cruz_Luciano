@@ -3,17 +3,33 @@ import validaciones as val
 import os
 
 def mostrar_menu():
+    """
+    Funcion que imprime el menu de opciones
+    """
     print("""
           --- Ejército Real de Autodefensa de la Tierra ---
 
           Seleccione una opcion agente:
 
-          1-Crear matriz
+          1-Crear Matriz
           2-Agregar Personaje
           3-Existencias
-          4-Existencias Humans
-          5-Existencias no Human
+          4-Existencias personajes Human
+          5-Existencias personajes que no sean Human
           6-Mostrar Detalle
+          7-Mostrar Saiyan
+          8-Mostrar más poderoso
+          9-Mostrar más inteligente
+          10-Filtrar Menor velocidad
+          11-Filtrar Débiles
+          12-Filtrar No-Binarios veloces
+          13-Promedios Inteligencia
+          14-Filtrar Kryptonian
+          15-Filtrar Saiyan Power
+          16-Ordenar por Más Inteligente
+          17-Ordenar por Menos Inteligente [not Human]
+          18-Ordenar por Más Poder [not Human]
+          19-Ordenar por Más Velocidad
           22-Cerrar
           """)
 
@@ -37,19 +53,110 @@ def start(nombres:list, alias:list, razas:list, generos:list, poderes:list, inte
             
             case 3:
                 if val.validacion_existe_matriz(matriz):
-                    print(f"Existencias de la matriz: {fun.existencias_de_raza(matriz, "", False)}")
+                    print(f"Existencias de la matriz: {fun.existencias_de_tag(matriz, 2, "")}")
 
             case 4:
                 if val.validacion_existe_matriz(matriz):
-                    print(f"Existencias de tipo human: {fun.existencias_de_raza(matriz, "Human", False)}")
+                    print(f"Existencias de tipo Human: {fun.existencias_de_tag(matriz, 2, "Human")}")
 
             case 5:
                 if val.validacion_existe_matriz(matriz):
-                    print(f"Existencias de tipo human: {fun.existencias_de_raza(matriz, "Human", True)}")
+                    print(f"Existencias de tipo diferente a Human: {fun.existencias_de_tag(matriz, 2, "Human", True)}")
+
             case 6:
                 if val.validacion_existe_matriz(matriz):
-                    fun.mostrar_matriz_personajes(matriz)
+                    matriz_truncada = fun.recorrido_de_matriz(matriz)
+                    fun.mostrar_matriz_personajes(matriz_truncada)
 
+            case 7:
+                if val.validacion_existe_matriz(matriz):
+                    print(f"{fun.existencias_de_tag(matriz, 2, "Saiyan", False)} Existencias de tipo Saiyan encontradas:")
+                    fun.mostrar_matriz_personajes(fun.filtrar_tag(matriz, 2, "Saiyan"))
+            
+            case 8:
+                if val.validacion_existe_matriz(matriz):
+                    mas_poderosos = fun.filtrar_por_valor(matriz, 4, "==", fun.buscar_valor_extremo(matriz, 4, "max"))
+                    print(f"{len(mas_poderosos)} Existencias encontradas con poder {fun.buscar_valor_extremo(matriz, 4, "max")}: ")
+                    fun.mostrar_matriz_personajes(mas_poderosos)
+            
+            case 9:
+                mas_inteligentes = fun.filtrar_por_valor(matriz, 5, "==", fun.buscar_valor_extremo(matriz, 5, "max"))
+
+                print(f"{len(mas_inteligentes)} Existencias encontradas con inteligencia de {fun.buscar_valor_extremo(matriz, 5, "max")}")
+                fun.mostrar_matriz_personajes(mas_inteligentes)
+
+            case 10:
+                if val.validacion_existe_matriz(matriz):
+                    promedio_velocidad_general = fun.calcular_promedio(matriz, 6)
+                    matriz_lentos_filtrada = fun.filtrar_por_valor(matriz, 6, "<", promedio_velocidad_general)
+
+                    print(f"{len(matriz_lentos_filtrada)} Existencias encontradas menores al promedio de velocidad de {promedio_velocidad_general}")
+                    fun.mostrar_matriz_personajes(matriz_lentos_filtrada)
+            
+            case 11:
+                if val.validacion_existe_matriz(matriz):
+                    poder_saiyan = fun.buscar_valor_extremo(fun.filtrar_tag(matriz, 2, "Saiyan"), 4, "min")
+                    matriz_menor_sayain =  fun.filtrar_por_valor(matriz, 4, "<", poder_saiyan)
+                    print(f"{len(matriz_menor_sayain)} Existencias encontradas con poder menor al de los Saiyans:")
+                    fun.mostrar_matriz_personajes(matriz_menor_sayain)
+            
+            case 12:
+                if val.validacion_existe_matriz(matriz):
+                    velocidad_NB = fun.buscar_valor_extremo(fun.filtrar_tag(matriz, 3, "No-Binario"), 6, "max")
+                    matriz_rapido_NB = fun.filtrar_por_valor(fun.filtrar_tag(matriz, 3, "No-Binario"), 6, "==", velocidad_NB)
+                    print(f"{len(matriz_rapido_NB)} Existencias encontradas de genero No-Binario con mayor velocidad:")
+                    fun.mostrar_matriz_personajes(matriz_rapido_NB)
+            
+            case 13:
+                if val.validacion_existe_matriz(matriz):
+                    promedio_androides = fun.calcular_promedio(fun.filtrar_tag(matriz, 2, "Android"), 4) + fun.calcular_promedio(fun.filtrar_tag(matriz, 2, "Android"), 5) / 2
+                    promedio_androides = promedio_androides / 2
+
+                    print(f"""
+                    Promedio de inteligencia de un Android: {fun.calcular_promedio(fun.filtrar_tag(matriz, 2, "Android"), 5)}
+                    Promedio de poder de un Android: {fun.calcular_promedio(fun.filtrar_tag(matriz, 2, "Android"), 4)}
+                    Promedio de ambos: {promedio_androides}""")
+
+            case 14:
+                if val.validacion_existe_matriz(matriz):
+                    matriz_no_kryptonian = fun.filtrar_tag(matriz, 2, "Kryptonian", True)
+                    matriz_kryptonian = fun.filtrar_tag(matriz, 2, "Kryptonian")
+                    promedio_kryptonian = fun.calcular_promedio(matriz_kryptonian, 4)
+                    matriz_anti_kryptonian = fun.filtrar_por_valor(matriz_no_kryptonian, 4, ">=", promedio_kryptonian)
+
+                    print(f"Estos son los no-Kryptonian que superan/igualan el promedio de poder de los Kryptonian: ")
+                    fun.mostrar_matriz_personajes(matriz_anti_kryptonian)
+            
+            case 15:
+                if val.validacion_existe_matriz(matriz):
+                    matriz_saiyan = fun.filtrar_tag(matriz, 2, "Saiyan")
+                    matriz_no_saiyan = fun.filtrar_tag(matriz, 2, "Saiyan", True)
+                    promedio_stats_saiyan = fun.calcular_stats_personajes(matriz_saiyan, 4, 5, 6)
+                    promedio_stats_no_saiyan = fun.calcular_stats_personajes(matriz_no_saiyan, 4, 5, 6)
+                    pass
+            
+            case 16:
+                if val.validacion_existe_matriz(matriz):
+                    print(f"Matriz ordenada por inteligencia de forma descendente: ")
+                    fun.mostrar_matriz_personajes(fun.selection_sort_matriz(matriz, 5, "DES"))
+            
+            case 17:
+                if val.validacion_existe_matriz(matriz):
+                    no_human_tontos = fun.selection_sort_matriz(fun.filtrar_tag(matriz, 2, "Human", True), 5, "ASC")
+                    print(f"Matriz ordenada por inteligencia de forma ascendente [No Human]: ")
+                    fun.mostrar_matriz_personajes(no_human_tontos)
+            
+            case 18:
+                if val.validacion_existe_matriz(matriz):
+                    no_human_poderosos = fun.selection_sort_matriz(fun.filtrar_tag(matriz, 2, "Human", True), 4, "DES")
+                    print(f"Matriz ordenada por poder de forma descendente [No Human]: ")
+                    fun.mostrar_matriz_personajes(no_human_poderosos)
+
+            case 19:
+                if val.validacion_existe_matriz(matriz):
+                    print(f"Matriz ordenada por velocidades de forma ascendente: ")
+                    fun.mostrar_matriz_personajes(fun.selection_sort_matriz(matriz, 6, "ASC"))
+            
             case 22:
                 os.system("cls")
                 break

@@ -66,8 +66,3 @@ def validar_modo(mensaje: str, modo: str) -> str:
         return validar_modo(mensaje, modo)
 
     return entrada
-
-def ingreso_de_usuario (texto:str):
-    obtener_algo = input(texto)
-
-    return obtener_algo

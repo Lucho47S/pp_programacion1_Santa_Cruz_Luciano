@@ -1,4 +1,4 @@
-def validacion_input_booleano(texto:str):
+def validacion_input_booleano(texto:str) -> bool:
     """
     Hace una pregunta al usuario que puede responderse con si o no y valida recursivamente
     
@@ -8,7 +8,7 @@ def validacion_input_booleano(texto:str):
 
     Returns:
 
-        dato[str]: respuesta del usuario
+        str: respuesta del usuario
     """
     dato = None
     print(texto)
@@ -25,14 +25,22 @@ def validacion_input_booleano(texto:str):
     
     return dato
 
-def validacion_existe_matriz(matriz: list[list]):
+def validacion_existe_matriz(matriz: list[list]) -> bool:
+    """Verifica la existencia de la matriz seleccionada
+
+    Args:
+        matriz (list[list]): matriz que debe existir
+
+    Returns:
+        bool: true o false respectivamente si existe o no la matriz
+    """
     if matriz:
         return True
     else:
         print("La matriz aun no fue creada, inicialize la matriz primero")
         return False
     
-def validar_modo(mensaje: str, modo: str) -> str:
+def validar_modo(mensaje: str, modo: str):
     """Pide al usuario un valor y valida recursivamente que respete su modo
 
     Args:
@@ -43,7 +51,7 @@ def validar_modo(mensaje: str, modo: str) -> str:
 
     Returns:
 
-        Entrada: input del usuario ya validado
+        input del usuario ya validado
     """
     entrada = input(mensaje)
     error = None

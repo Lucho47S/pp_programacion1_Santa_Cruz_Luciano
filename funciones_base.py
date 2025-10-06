@@ -1,7 +1,7 @@
 import validaciones as val
 
 
-def rellenar_matriz_con_datos (nombres:list, alias:list, razas:list, generos:list, poderes:list, inteligencias:list, velocidades:list):
+def rellenar_matriz_con_datos (nombres:list, alias:list, razas:list, generos:list, poderes:list, inteligencias:list, velocidades:list) -> list[list]:
     """Crea una matriz con las listas dadas
 
     Args:
@@ -26,25 +26,14 @@ def rellenar_matriz_con_datos (nombres:list, alias:list, razas:list, generos:lis
     
     return matriz
 
-def agregar_personaje_input():
+def agregar_personaje_input() ->list:
     """Retorna todos los datos ingresados por el usuario para añadir un personaje
 
     Returns:
-        
-        nombres[str]: nombre del personaje
-
-        alias[str]: apodo del personaje
-
-        razas[str]: raza del personaje
-
-        generos[str]: genero del personaje
-
-        poderes[int]: nivel de poder del personaje
-
-        inteligencias[int]: nivel de inteligencia del personaje
-        
-        velocidades[int]: nivel de velocidad del sujeto
+        list: lista con todos los valores del personaje ingresado
     """
+    entrada = []
+
     nombres = val.validar_modo("Ingresa el nombre del sujeto: ", "alnum")
     alias = str(input("Ingresa el alias del sujeto: "))
     razas = str(input("Ingresa las razas del sujeto: "))
@@ -52,11 +41,12 @@ def agregar_personaje_input():
     poderes = int(val.validar_modo("Ingresa el nivel de poder del sujeto: ", "digit"))
     inteligencias = int(val.validar_modo("Ingresa la inteligencia del sujeto: ", "digit"))
     velocidades = int(val.validar_modo("Ingresa las velocidades del sujeto: ", "digit"))
+    
+    entrada = [nombres, alias, razas, generos, poderes, inteligencias, velocidades]
+    return entrada
 
-    return [nombres, alias, razas, generos, poderes, inteligencias, velocidades]
-
-def agregar_personaje_matriz(matriz:list[list]):
-    """Appendea un personaje a la matriz
+def agregar_personaje_matriz(matriz:list[list]) -> list[list]:
+    """Añade un personaje elejido por el usuario a la matriz
 
     Args:
         matriz[list[list]]: matriz a appendear
@@ -86,7 +76,7 @@ def mostrar_matriz_personajes(matriz:list[list]):
         print(f"Nombre: {fila[0]} | Alias: {fila[1]} | Raza: {fila[2]} | Genero: {fila[3]} | Poder: {fila[4]} | inteligencia: {fila[5]} | velocidad: {fila[6]} ")
 
 
-def existencias_de_tag(matriz:list[list], indice_fila : int, tag:str, excluir:bool = False):
+def existencias_de_tag(matriz:list[list], indice_fila : int, tag:str, excluir:bool = False) -> int:
     """Recorre la matriz y contea cada elemento con la etiqueta asignada o la falta de esta
 
     Args:
@@ -110,7 +100,7 @@ def existencias_de_tag(matriz:list[list], indice_fila : int, tag:str, excluir:bo
     return int(contador)
 
 
-def filtrar_tag(matriz:list[list], indice_fila: int, tag: str, excluir: bool = False):
+def filtrar_tag(matriz:list[list], indice_fila: int, tag: str, excluir: bool = False) -> list[list]:
     """Filtra una matriz buscando los elementos que poseen una cierta etiqueta
 
     Args:
@@ -134,7 +124,7 @@ def filtrar_tag(matriz:list[list], indice_fila: int, tag: str, excluir: bool = F
     
     return matriz_filtrada
 
-def recorrido_de_matriz(matriz: list[list]):
+def recorrido_de_matriz(matriz: list[list]) -> list[list]:
     """ Recorre cada fila de la matriz truncando los datos
 
     args:
@@ -152,7 +142,7 @@ def recorrido_de_matriz(matriz: list[list]):
     return matriz_detallada
 
 
-def truncando(fila):
+def truncando(fila) -> list:
     """ Trunca los elementos en cada posicion 
 
     Args: 
@@ -251,9 +241,15 @@ def calcular_promedio(matriz: list[list], indice: int) -> float:
     return total / contador
 
 def selection_sort_matriz(matriz: list[list], indice_columna: int, modo: str ="ASC") -> list[list]:
-    """
-    Ordena la matriz según la columna 'col' en orden ascendente o descendente.
-    Solo tiene un bucle en esta función.
+    """Ordena la matriz según el indice_columna en orden ascendente o descendente.
+
+    Args:
+        matriz (list[list]): matriz a ordenar
+        indice_columna (int): columna a ordenar
+        modo (str, optional): decide si se ordena de forma DES o ASC. "ASC" por defecto
+
+    Returns:
+        list[list]: matriz ordenada
     """
     for inicio in range(len(matriz)):  
         indice_extremo = buscar_extremo_matriz(matriz, inicio, indice_columna, modo)
@@ -271,7 +267,7 @@ def buscar_extremo_matriz(matriz: list[list], inicio: int, indice_columna: int, 
         matriz (list[list]): matriz a ordenar
         inicio (int): valor inicial del ordenamiento
         indice_columna (int): columna a ordenar
-        modo (str, optional): decide si se ordena de forma DES o ASC
+        modo (str, optional): decide si se ordena de forma DES o ASC. "ASC" por defecto
 
     Returns:
         int: ultimo indice de la matriz

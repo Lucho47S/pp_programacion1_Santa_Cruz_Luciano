@@ -35,6 +35,17 @@ def mostrar_menu():
 
 
 def start(nombres:list, alias:list, razas:list, generos:list, poderes:list, inteligencias:list, velocidades:list) -> None:
+    """funcion que contiene el bucle principal y las listas dadas por la consigna
+
+    Args:
+        nombres (list): lista de nombres de la libreria utn_fra
+        alias (list): lista de alias de la libreria utn_fra
+        razas (list): lista de razas de la libreria utn_fra
+        generos (list): lista de generosde la libreria utn_fra
+        poderes (list): lista de poderes de la libreria utn_fra
+        inteligencias (list): lista de inteligencias de la libreria utn_fra
+        velocidades (list): lista de velocidades de la libreria utn_fra
+    """
 
     matriz = []
 
@@ -80,10 +91,11 @@ def start(nombres:list, alias:list, razas:list, generos:list, poderes:list, inte
                     fun.mostrar_matriz_personajes(mas_poderosos)
             
             case 9:
-                mas_inteligentes = fun.filtrar_por_valor(matriz, 5, "==", fun.buscar_valor_extremo(matriz, 5, "max"))
+                if val.validacion_existe_matriz(matriz):
+                    mas_inteligentes = fun.filtrar_por_valor(matriz, 5, "==", fun.buscar_valor_extremo(matriz, 5, "max"))
 
-                print(f"{len(mas_inteligentes)} Existencias encontradas con inteligencia de {fun.buscar_valor_extremo(matriz, 5, "max")}")
-                fun.mostrar_matriz_personajes(mas_inteligentes)
+                    print(f"{len(mas_inteligentes)} Existencias encontradas con inteligencia de {fun.buscar_valor_extremo(matriz, 5, "max")}")
+                    fun.mostrar_matriz_personajes(mas_inteligentes)
 
             case 10:
                 if val.validacion_existe_matriz(matriz):
@@ -129,12 +141,17 @@ def start(nombres:list, alias:list, razas:list, generos:list, poderes:list, inte
             
             case 15:
                 if val.validacion_existe_matriz(matriz):
-                    matriz_saiyan = fun.filtrar_tag(matriz, 2, "Saiyan")
-                    matriz_no_saiyan = fun.filtrar_tag(matriz, 2, "Saiyan", True)
-                    promedio_stats_saiyan = fun.calcular_stats_personajes(matriz_saiyan, 4, 5, 6)
-                    promedio_stats_no_saiyan = fun.calcular_stats_personajes(matriz_no_saiyan, 4, 5, 6)
-                    pass
-            
+                    saiyan = fun.filtrar_tag(matriz, 2, "Saiyan")
+                    no_saiyan = fun.filtrar_tag(matriz, 2, "Saiyan", True)
+                    indice_saiyan = (fun.calcular_promedio(saiyan, 4) + fun.calcular_promedio(saiyan, 5) + fun.calcular_promedio(saiyan, 6)) / 3
+
+                    comp_1 = fun.filtrar_por_valor(no_saiyan, 6, "<", indice_saiyan)
+                    comp_2 = fun.filtrar_por_valor(comp_1, 5, "<", indice_saiyan)
+                    comp_3 = fun.filtrar_por_valor(comp_2, 4, "<", indice_saiyan)
+
+                    print(f"Personajes con stats menores al indice Sayain ({indice_saiyan}): ")
+                    fun.mostrar_matriz_personajes(comp_3)
+                    
             case 16:
                 if val.validacion_existe_matriz(matriz):
                     print(f"Matriz ordenada por inteligencia de forma descendente: ")

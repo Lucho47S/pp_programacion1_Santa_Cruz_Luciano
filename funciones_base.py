@@ -289,10 +289,3 @@ def buscar_extremo_matriz(matriz: list[list], inicio: int, indice_columna: int, 
         else:                
             print("ERROR, modo de ordenamiento invalido")
     return extremo
-
-def calcular_stats_personajes (matriz:list[list], poder:int, inteligencia:int, velocidad:int):
-
-    for fila in matriz:
-        promedio_total_stats = (poder + inteligencia + velocidad) % 3
-    
-    return promedio_total_stats
